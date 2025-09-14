@@ -26,12 +26,14 @@ We highly recommend reading the paper to understand the seven-layer architecture
 
 Follow these instructions to set up and run the project locally.
 
-### Prerequisites
+### Using NodeJS
+
+#### Prerequisites
 
 - Node.js (v18 or later)
 - npm or yarn
 
-### Installation & Setup
+#### Installation & Setup
 
 1. **Clone the repository:**
 
@@ -65,7 +67,7 @@ Follow these instructions to set up and run the project locally.
      LLM_MODEL=model-name
      ```
 
-### Running the Application
+#### Running the Application
 
 This project requires two processes to run concurrently: the Next.js frontend and the Genkit AI flows.
 
@@ -88,6 +90,40 @@ This project requires two processes to run concurrently: the Next.js frontend an
    This command starts the Genkit development server and automatically reloads it when you make changes to your AI flows.
 
 You can now open your browser and start using the MAESTRO Threat Analyzer.
+
+### Using Dockeer
+
+If you prefer to run the application inside a Docker container, this project includes a Dockerfile that starts the Genkit flows and the Next.js dev server together.
+
+- Build the image:
+
+  ```cmd
+  docker build -t maestro:dev .
+  ```
+
+- Run the container (example):
+
+  ```cmd
+  docker run --rm -p 9002:9002 \
+     -e LLM_PROVIDER=ollama \
+     -e OLLAMA_SERVER_ADDRESS=http://host.docker.internal:11434 \
+     maestro:dev
+  ```
+
+Notes:
+
+- The Dockerfile exposes port `9002` and defaults `LLM_PROVIDER` to `ollama`.
+- On Windows, if you're running an Ollama server on the host machine, use `host.docker.internal` so the container can reach the host's Ollama API (replace the URL/port if your Ollama server uses a different port).
+- To use OpenAI or Google Gemini instead of Ollama, pass the appropriate environment variables when running the container, for example:
+
+  ```cmd
+  docker run --rm -p 9002:9002 \
+     -e LLM_PROVIDER=openai \
+     -e OPENAI_API_KEY=your_api_key_here \
+     maestro:dev
+  ```
+
+- After the container starts, open `http://localhost:9002` in your browser to verify the app is running.
 
 ## How to Contribute
 
